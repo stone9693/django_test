@@ -55,7 +55,14 @@ class ArticleSerializer(serializers.ModelSerializer):
         data_list=[info_dict.user_id for info_dict in article_id_queryset]
         return data_list
     def validate(self,data):
-        if 'redis' not in data['title'].lower():
-            raise serializers.ValidationError('redis not in title')
+        accept_title_list=['redis','django','python','mysql']
+        is_title_in=False
+        is_title_name = data['title']
+        for title_name in accept_title_list:
+            if title_name in data['title'].lower():
+                is_title_in=True
+
+        if not is_title_in:
+            raise serializers.ValidationError(f'{is_title_name} not in title')
         return data
 
